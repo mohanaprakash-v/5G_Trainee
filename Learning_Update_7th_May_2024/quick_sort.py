@@ -24,7 +24,6 @@ def quick_sort(arr):
     
     return quick_sort(left) + mid + quick_sort(right)
 
-
 arr = [3, 4, 6, 5, 1, 8, 2]
 print(f"Before sorting: {arr}")
 print(f"Sorted array using quick sort: {quick_sort(arr)}")
