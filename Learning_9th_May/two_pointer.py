@@ -16,6 +16,6 @@ def two_point(arr):
             rp-=1
     if h == 1:
         print("No combinations")
-        
+
 arr = [1,2,3,4,5,6,7]
 two_point(arr)
