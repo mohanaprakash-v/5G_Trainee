@@ -20,10 +20,8 @@ for i in range(len(nums)):
     sorted = copy.deepcopy(nums)
     sorted.pop(i)
     count = 1
+    
     for j in sorted:
         count = count*j
     final[i] = count
-return final
-
-
-
+print(final)
