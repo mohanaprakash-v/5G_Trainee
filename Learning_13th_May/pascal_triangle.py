@@ -10,4 +10,3 @@ class Solution(object):
                 result_temp.append(temp[i]+temp[i+1])
             result.append(result_temp)
         return result
-
