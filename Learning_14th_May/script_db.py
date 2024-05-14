@@ -2,7 +2,7 @@ import mysql.connector
 
 # Connect to MySQL
 mydb = mysql.connector.connect(
-    host="192.168.1.5",
+    host="localhost",
     user="root",
     password="root"
 )
@@ -13,12 +13,14 @@ cursor = mydb.cursor()
 # Create a new database
 cursor.execute("CREATE DATABASE mydatabase")
 
+cursor.execute("USE mydatabase")
+
 # Connect to the newly created database
 mydb = mysql.connector.connect(
     host="localhost",
-    user="yourusername",
-    password="yourpassword",
-    database="test"
+    user="root",
+    password="root",
+    database="mydatabase"
 )
 
 # Create a cursor for the new database
