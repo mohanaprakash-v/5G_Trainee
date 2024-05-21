@@ -84,4 +84,3 @@ values (1,'2019-03-20',2);
 
 insert into order_items
 values (last_insert_id(),2, 1, 4.66)
-
