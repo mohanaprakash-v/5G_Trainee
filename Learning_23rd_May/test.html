@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST</title>
+    <script>
+
+        function display(){
+            var name = document.getElementById("fullname").value;    //GETTING THE VALUE
+            document.getElementById("print").innerHTML = name  //PASSING THE VALUE TO WHERE IT NEED TO DISPLAYED
+
+        }
+        
+    </script>
+</head>
+<body>
+    <label for="name">Enter a name:</label>
+    <input type="text" id="fullname">
+    <input type="button" value="Submit" onclick="display()">
+    <h1 id="print"></h1>
+
+</body>
+</html>

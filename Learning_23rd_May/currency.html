@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Currency Converter</title>
+    </head>
+    <body>
+        <h1>Currency Converter</h1>
+        <form>
+            <label>From:</label>
+            <select id="from">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="INR">INR</option>
+            </select>
+            <label>To:</label>
+            <select id="to">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="INR">INR</option>
+            </select>
+            <br><br>
+            <label>Amount to Convert:</label>
+            <input type="text" id="amount">
+            <button type="button" id="convert">Convert</button><br>
+            <br>
+            <label>Result Amount:</label>
+            <p id="result"></p>
+            <script>
+                const to = document.getElementById("to");
+                const from = document.getElementById("from");
+                const convert = document.getElementById("convert");
+                const result = document.getElementById("result");
+                const amount = document.getElementById("amount");
+
+                convert.addEventListener("click", function() {
+                    let fromCurrency = from.value;
+                    let toCurrency = to.value;
+                    let amt = amount.value;
+
+                    if (isNaN(amt) || amt === "") {
+                        result.innerHTML = "Please enter a valid amount";
+                        return;
+                    }
+
+                    fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.rates[toCurrency]) {
+                                result.innerHTML = "Invalid currency code";
+                                return;
+                            }
+                            let rate = data.rates[toCurrency];
+                            let total = rate * amt;
+                            result.innerHTML = `Total: ${total.toFixed(2)} ${toCurrency}`;
+                            console.log(total);
+                        })
+                        .catch(error => {
+                            result.innerHTML = "Error fetching the exchange rate. Please try again.";
+                            console.error('Error:', error);
+                        });
+                });
+            </script>
+        </form>
+    </body>
+</html>
