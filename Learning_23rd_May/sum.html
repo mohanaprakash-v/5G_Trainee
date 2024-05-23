@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUM</title>
+</head>
+<body>
+    <div class="sum">
+        <label for="addition">Enter First Value:</label>
+    <input type="number" id="first">
+<br><br>
+    <label for="addition">Enter Second Value:</label>
+    <input type="number" id="second">
+    <br>
+    <h1 id="result"></h1>
+    <input id="submit" type="button" value="Submit" onclick="add()">
+    </div>
+    
+<style>
+    body{
+        background-color: bisque;
+    }
+    .sum{
+        padding: 20px 20px;
+    }
+    #first{
+        margin-left: 30px;
+    }
+    #second{
+        margin-left: 12px;
+    }
+    #submit{
+        margin-left: 110px;
+        margin-top: 10px;
+    }
+    #result{
+        color: rgb(16, 16, 61);
+        padding-left: 130px;
+    }
+
+</style>
+    <script>
+
+        function add(){
+            var first = parseInt(document.getElementById("first").value);
+            var second = parseInt(document.getElementById("second").value);
+
+            var total = first + second
+
+            document.getElementById("result").innerHTML = total;
+
+        }
+
+    </script>
+</body>
+</html>
