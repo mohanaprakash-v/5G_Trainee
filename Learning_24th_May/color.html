@@ -1,0 +1,26 @@
+<style>
+    div{
+        background-color: blue;
+        width: 100px;
+        height: 100px;
+    }
+
+    .width{
+        width: 300px;
+    }
+</style>
+<div id="box">
+</div>
+<br><br>
+<button id="button" onclick="change()">Change Color</button>
+
+<script>
+    var box = document.getElementById("box")
+
+    function change(){
+        //MANIPULATING THROUGH CSS STYLE PROPERTY
+        box.style.backgroundColor = "black"
+        //ATTRIBUTE SETTING FOR NON EXISTING CLASS WITH STYLE PROPERTY
+        box.setAttribute("class","width")
+    }
+</script>

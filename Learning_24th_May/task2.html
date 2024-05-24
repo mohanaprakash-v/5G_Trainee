@@ -1,0 +1,31 @@
+<!-- ADDING HELLOS -->
+
+<title>Add Hello</title>
+<button onclick="add()">ADD Hello</button>
+<div id="result"></div>
+
+<script>
+
+    var div=document.getElementById("result");
+    function add(){
+
+        var h1 = document.createElement("h1")
+        h1.textContent = "Hello"
+        div.append(h1)
+    }
+</script>
+
+<br><br>
+
+<!-- CHANGING COLOR OF THE BUTTON -->
+
+<button id="button" onclick="change()">Change COLOR</button>
+
+<script>
+    function change(){
+        var button = document.getElementById("button")
+
+        button.style.backgroundColor = "blue"
+
+    }
+</script>
