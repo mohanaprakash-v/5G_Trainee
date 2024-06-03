@@ -1,8 +1,11 @@
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'beauty.css' %}">
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-
+{% for feature in features %}
 <div class="container">
-    <h1>FIRST DIVISION</h1>
+    <h1>Django Models</h1>
+    <h2>My name is: {{feature.name}} and my id is {{feature.id}}</h2>
+    <h3>I am a {{feature.details}}</h3>
 </div>
+{% endfor %}

@@ -1,9 +1,32 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Feature
 
 # Create your views here.
 def index(request):
-    return render(request,'index.html')
+
+    feature1 = Feature()
+    feature1.id = 1
+    feature1.name = 'Naresh'
+    feature1.details = 'Devops Engineer'
+    
+
+    feature2 = Feature()
+    feature2.id = 2
+    feature2.name = 'Vijay'
+    feature2.details = 'UI/UX Designer'
+
+    feature3 = Feature()
+    feature3.id = 3
+    feature3.name = 'Mohan'
+    feature3.details = 'Software Developer'
+
+    features = [feature1, feature2, feature3]
+
+    
+
+    return render(request,'index.html', {'features': features})
+    
 
 def counter(request):
     words = request.POST['count']
