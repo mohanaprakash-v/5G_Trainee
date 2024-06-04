@@ -1,11 +1,17 @@
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="{% static 'styles.css' %}">
 
 {% for feature in features %}
 <div class="container">
     <h1>Django Models</h1>
-    <h2>My name is: {{feature.name}} and my id is {{feature.id}}</h2>
+    <h2>My name is: {{feature.name}} and my id {{feature.id}}</h2>
     <h3>I am a {{feature.details}}</h3>
+    {% if feature.is_true == True %}
+    <h4>The Values are True</h4>
+    {% elif feature.is_true == False %}
+    <h4>The Values are False</h4>
+    {% endif %}
+
 </div>
 {% endfor %}
