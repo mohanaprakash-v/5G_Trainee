@@ -23,10 +23,8 @@ def index(request):
 
     features = [feature1, feature2, feature3]
 
-    
-
     return render(request,'index.html', {'features': features})
-    
+
 
 def counter(request):
     words = request.POST['count']
