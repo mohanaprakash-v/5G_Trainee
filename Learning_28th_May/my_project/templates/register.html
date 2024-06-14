@@ -4,27 +4,47 @@
     <title>Register</title>
 </head>
 <body>
-    <h2>User Register Page</h2>
-    <form method="post">
-        {% csrf_token %}
-        <p>Username: </p>
-        <input type="text" name="username" id="username" required><br>
-        <p>Email: </p>
-        <input type="email" name="email" id="email" required><br>
-        <p>Password: </p>
-        <input type="password" name="password" id="password" required><br>
-        <p>Confirm Password: </p>
-        <input type="password" name="password2" id="password2" required><br>
-        <br>
-        <button type="submit">Register</button>
-    </form>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <style>
+        .registerpage{
+            border: solid;
+            background-color: aquamarine;
+            width: 350px;
+            height: 400px;
+            border-radius: 20%;
+            margin-top: 100px;
+        }
+        body{
+            background-color: seashell;
+        }
+    </style>
+<center>
+    <div class="registerpage">
+        <h2>User Register Page</h2>
+        <form method="post">
+            {% csrf_token %}
+            <p>Username: </p>
+            <input type="text" name="username" id="username" required><br>
+    
+            <p>Email ID: </p>
+            <input type="email" name="email" id="email" required><br>
+    
+            <p>Password: </p>
+            <input type="password" name="password" id="password" required><br>
+            <p>Confirm Password:</p>
+            <input type="password" name="password2" id="password2" required><br>
+            <br>
+            <button type="submit">Register</button>
+        </form>
+
+    </div>
+</center>
+{% if messages %}
+<ul>
+{% for message in messages %}
+    <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
 </body>
 </html>

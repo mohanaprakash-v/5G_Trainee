@@ -1,15 +1,74 @@
-<h1>User Login Page</h1>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .loginpage{
+        width: 300px;
+        margin-top: 200px;
+        height: 280px;
+        background-color: bisque;
+        border: solid;
+        border-radius: 20%;
+    }
+    .button{
+        text-decoration: none;
+        color: black;
 
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <p>Username: </p>
-    <input type="text" name="username" id="username" required>
-    <p>Password: </p>
-    <input type="password" name="password" id="password" required>
+    }
+    body{
+        background-color: lightseagreen;
+    }
+    .navbar {
+            width: 100%;
+            background-color: black;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+        }
+
+    .navbar a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            display: block;
+        }
+
+    .navbar a:hover {
+            background-color: greenyellow;
+            color: black;
+        }
+</style>
+
+<div class="navbar">
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+    </nav>
+</div>
+
+<center>
+<div class="loginpage">
+    <br>
+    <h1>User Login Page</h1>
     <br><br>
-    <button type="submit">Login</button>
-    
-</form>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <label for="">Username: </label>
+        <input type="text" name="username" id="username" required>
+        <br><br>
+        <label for="">Password: </label>
+        <input type="password" name="password" id="password" required>
+        <br><br>
+        <button type="submit" style="width: 55px; height: 25px;">Login</button>
+    </form>
+    <br>
+    <a href="{% url 'register' %}" class="button">Sign-Up</a>
+</div>
+</center>
 
 {% if messages %}
     <ul class="messages">
