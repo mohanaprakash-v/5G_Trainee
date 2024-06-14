@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
         html, body {
             height: 100%;
@@ -64,7 +64,7 @@
     <div class="navbar">
         <a href="{% url 'home' %}">Home</a>
         {% if user.is_authenticated %}
-            <a href="">Logout</a>
+            <a href="{% url 'login' %}">Logout</a>
         {% else %}
             <a href="{% url 'login' %}">Login</a>
         {% endif %}
