@@ -68,12 +68,14 @@
     <br>
     <a href="{% url 'register' %}" class="button">Sign-Up</a>
 </div>
-</center>
 
+<br><br>
 {% if messages %}
     <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% for message in messages %} 
+            <h3>{{ message }}</h3>
         {% endfor %}
     </ul>
 {% endif %}
+
+</center>
