@@ -59,3 +59,6 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('home')
+
+def about(request):
+    return render(request, 'about.html')
