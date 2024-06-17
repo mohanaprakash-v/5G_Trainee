@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+import json
 from .models import Feature
 
 # Create your views here.
@@ -62,3 +67,32 @@ def logout(request):
 
 def about(request):
     return render(request, 'about.html')
+
+@csrf_exempt
+@require_POST
+def get_csrf_token(request):
+    try:
+        # Parse the JSON body
+        data = json.loads(request.body)
+
+        # Get username and password from the request
+        username = data.get('username')
+        password = data.get('password')
+
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Log the user in
+            auth_login(request, user)
+            
+            # Generate the CSRF token
+            csrf_token = get_token(request)
+            
+            return JsonResponse({'csrfToken': csrf_token})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
