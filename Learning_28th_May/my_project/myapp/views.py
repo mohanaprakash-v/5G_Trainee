@@ -35,7 +35,7 @@ def register(request):
                 messages.info(request, "Username Already Exists!")
                 return redirect('register')
             else:
-                # creating a user
+                # Creating a user
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
                 return redirect('login')
@@ -72,10 +72,8 @@ def about(request):
 @require_POST
 def get_csrf_token(request):
     try:
-        # Parse the JSON body
         data = json.loads(request.body)
 
-        # Get username and password from the request
         username = data.get('username')
         password = data.get('password')
 
@@ -83,10 +81,9 @@ def get_csrf_token(request):
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
-            # Log the user in
+
             auth_login(request, user)
             
-            # Generate the CSRF token
             csrf_token = get_token(request)
             
             return JsonResponse({'csrfToken': csrf_token})
