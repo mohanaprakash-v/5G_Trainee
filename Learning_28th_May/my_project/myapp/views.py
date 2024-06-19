@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
-from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
 from .models import Feature
 
-# Create your views here.
 def index(request):
     features = Feature.objects.all()
     return render(request, 'index.html', {'features': features})
@@ -64,9 +62,6 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('home')
-
-def about(request):
-    return render(request, 'about.html')
 
 @csrf_exempt
 @require_POST
