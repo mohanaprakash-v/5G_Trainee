@@ -46,7 +46,11 @@
 
         .container {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 20px;
+        }
+
+        .actions{
+            padding-top: 20px;
         }
 
         h1 {
@@ -56,6 +60,26 @@
 
         h2, h3 {
             margin: 10px 0;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions a, .actions button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .actions a:hover, .actions button:hover {
+            background-color: greenyellow;
+            color: black;
         }
     </style>
 </head>
@@ -69,16 +93,25 @@
         {% else %}
             <a href="{% url 'login' %}">Login</a>
         {% endif %}
-        
     </div>
 
     <div class="container">
-        {% csrf_token %}
+        {% if user.is_authenticated %}
         <h1>---- USER AUTHENTICATION ----</h1>
         <h2>-- HOME PAGE --</h2>
         <h3>Welcome to the Home Page</h3>
-        {% if user.is_authenticated %}
         <h1>Logged in as : {{ user.username }}</h1>
+        
+        <div class="actions">
+            <a href="{% url 'update_user' user.username %}">Update Profile</a>
+            <form method="post" action="{% url 'delete_user' user.username %}" onsubmit="return confirm('Are you sure you want to delete your profile?');">
+                {% csrf_token %}
+                <button type="submit">Delete Profile</button>
+            </form>
+        </div>
+        
+        {% else %}
+        <h2>LOGIN TO ACCESS THE PROFILE</h2>
         {% endif %}
     </div>
 

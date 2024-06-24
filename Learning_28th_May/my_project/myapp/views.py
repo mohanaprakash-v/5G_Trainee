@@ -10,13 +10,13 @@ import json
 from .models import Feature
 
 def index(request):
-    features = Feature.objects.all()
-    return render(request, 'index.html', {'features': features})
+    # features = Feature.objects.all()
+    return render(request, 'index.html')   # {'features': features}
 
-def counter(request):
-    words = request.POST['count']
-    text_length = len(words.split())
-    return render(request, 'counter.html', {'length': text_length})
+# def counter(request):
+#     words = request.POST['count']
+#     text_length = len(words.split())
+#     return render(request, 'counter.html', {'length': text_length})
 
 def register(request):
     if request.method == 'POST':
@@ -84,29 +84,30 @@ def profile(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-# def profiles_page(request):
-#     users = User.objects.all()
-#     return render(request, 'profiles.html', {'users': users})
-
-
 def profile_page(request):
     users = User.objects.all()
     return render(request, 'profile.html', {'users': users})
-
 
 @csrf_exempt
 @require_POST
 def get_csrf_token(request):
     try:
         data = json.loads(request.body)
+
+        # Get username and password from the request
         username = data.get('username')
         password = data.get('password')
 
+        # Authenticate the user
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            # Log In User
             auth_login(request, user)
+            
+            # Generating CSRF Token
             csrf_token = get_token(request)
+            
             return JsonResponse({'csrfToken': csrf_token})
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=401)
@@ -115,59 +116,40 @@ def get_csrf_token(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-# @csrf_exempt
-# @require_POST
-# def profiles(request):
-#     try:
-#         data = json.loads(request.body)
-#         username = data.get('username')
-#         email = data.get('email')
-#         password = data.get('password')
 
-#         if not (username and email and password):
-#             return JsonResponse({'error': 'All fields are required.'}, status=400)
-
-#         if User.objects.filter(username=username).exists():
-#             return JsonResponse({'error': 'Username already exists.'}, status=400)
-
-#         if User.objects.filter(email=email).exists():
-#             return JsonResponse({'error': 'Email already exists.'}, status=400)
+@require_http_methods(["GET", "POST"])
+def update_user(request, username):
+    user = get_object_or_404(User, username=username)
     
-#         user = User.objects.create_user(username=username, email=email, password=password)
-#         user.save()
-#         return JsonResponse({'message': 'User successfully inserted!'})
-#     except json.JSONDecodeError:
-#         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-#     except Exception as e:
-#         return JsonResponse({'error': str(e)}, status=500)
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        if username and username != user.username:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already exists!")
+                return redirect('update_user', username=user.username)
+            else:
+                user.username = username
+        
+        if email:
+            user.email = email
+        
+        if password:
+            user.set_password(password)
+        
+        user.save()
+        return redirect('profile_page')
+    
+    return render(request, 'update_user.html', {'user': user})
 
-# def profiles_page(request):
-#     users = User.objects.all()
-#     return render(request, 'profiles.html', {'users': users})
-
-# @csrf_exempt
-# @require_http_methods(["DELETE"])
-# def delete_user(request, username):
-#     try:
-#         user = get_object_or_404(User, username=username)
-#         user.delete()
-#         return JsonResponse({'message': 'User deleted successfully.'})
-#     except Exception as e:
-#         return JsonResponse({'error': str(e)}, status=500)
-
-# @csrf_exempt
-# @require_http_methods(["PUT"])
-# def update_user(request, username):
-#     try:
-#         user = get_object_or_404(User, username=username)
-#         data = json.loads(request.body)
-#         user.email = data.get('email', user.email)
-#         password = data.get('password')
-#         if password:
-#             user.set_password(password)
-#         user.save()
-#         return JsonResponse({'message': 'User updated successfully.'})
-#     except json.JSONDecodeError:
-#         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-#     except Exception as e:
-#         return JsonResponse({'error': str(e)}, status=500)
+@require_http_methods(["GET", "POST"])
+def delete_user(request, username):
+    user = get_object_or_404(User, username=username)
+    
+    if request.method == "POST":
+        user.delete()
+        return redirect('home')
+    
+    return render(request, 'delete_user.html', {'user': user})
