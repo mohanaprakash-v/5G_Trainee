@@ -1,5 +1,4 @@
 # drf_app/views.py
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -34,20 +33,52 @@ def index(request):
 
 # ---SERIALIZERS CONCEPT---
 # CRUD Methods using Serializers
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def person(request):
     # Checking whether it is GET method  
     if request.method == 'GET':
         # Getting all the person datas form DB in 'Person' class
         objs = Person.objects.all()   # 'all' --- means as a set = [1,2,3,4,5] 
         # Passing 'many' if the data is more than one 
-        serializer = PeopleSerializer(objs, many = True)
+        serializer = PeopleSerializer(objs, many=True)
         return Response(serializer.data)  # returns a LIST
     elif request.method == 'POST':
         data = request.data
-        serializer = PeopleSerializer(data = data)
+        serializer = PeopleSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-    # ERROR Response
-    return Response(serializer.errors)
+        # ERROR Response
+        return Response(serializer.errors)
+    elif request.method == 'PUT':  # PUT Method doesn't allow partial updation
+        data = request.data
+        serializer = PeopleSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        # ERROR Response
+        return Response(serializer.errors)
+    elif request.method == 'PATCH':
+        data = request.data
+        try:
+            person = Person.objects.get(id=data["id"])
+        except Person.DoesNotExist:
+            return Response({"error": "Person not found"}, status=404)
+        
+        # Checking whether 'name' field is available in data list
+        if 'name' in data:
+            person.name = data["name"]
+
+        serializer = PeopleSerializer(person, data=data, partial=True)  # PATCH method allows partial updation
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        # ERROR Response
+        return Response(serializer.errors, status = 400)
+    
+    else:
+        data = request.data
+        person = Person.objects.get(id=data["id"])
+        person.delete()
+        return Response({"message" : "Person is Deleted"})
