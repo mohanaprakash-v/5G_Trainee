@@ -1,8 +1,6 @@
-# drf_app/views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
-
 from .models import Person
 from .serializers import PeopleSerializer
 
@@ -38,13 +36,13 @@ def person(request):
     # Checking whether it is GET method  
     if request.method == 'GET':
         # Getting all the person datas form DB in 'Person' class
-        objs = Person.objects.all()   # 'all' --- means as a set = [1,2,3,4,5] 
+        objs = Person.objects.filter(color__isnull = False)  # 'all' --- means as a set = [1,2,3,4,5] #give us the empty queryset object
         # Passing 'many' if the data is more than one 
         serializer = PeopleSerializer(objs, many=True)
         return Response(serializer.data)  # returns a LIST
     elif request.method == 'POST':
         data = request.data
-        serializer = PeopleSerializer(data=data)
+        serializer = PeopleSerializer(data=data)  #converts into query set
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

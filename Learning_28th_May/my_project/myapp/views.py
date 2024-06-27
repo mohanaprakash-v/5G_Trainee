@@ -90,7 +90,7 @@ def profile_page(request):
 
 @csrf_exempt
 @require_POST
-def get_csrf_token(request):
+def csrf_token(request):
     try:
         data = json.loads(request.body)
 
@@ -115,7 +115,6 @@ def get_csrf_token(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
 
 @require_http_methods(["GET", "POST"])
 def update_user(request, username):
