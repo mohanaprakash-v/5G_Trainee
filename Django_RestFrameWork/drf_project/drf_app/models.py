@@ -16,4 +16,11 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Member(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    age = models.IntegerField(null=True)
+    sports = models.CharField(max_length=200, null=True)
+
 
