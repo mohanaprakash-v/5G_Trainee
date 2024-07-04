@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models import Person, Color
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
 # Using another serializer class instead of using depth 
 class ColorSerializer(serializers.ModelSerializer):
 

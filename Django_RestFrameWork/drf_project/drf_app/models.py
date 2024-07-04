@@ -2,11 +2,14 @@ from django.db import models
 
 # Create your models here.
 
+
 class Color(models.Model):
     color_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.color_name
+    
+    
 
 class Person(models.Model):
     # adding related name so that we can add a reverse mapping to it
@@ -22,5 +25,3 @@ class Member(models.Model):
     last_name = models.CharField(max_length=255)
     age = models.IntegerField(null=True)
     sports = models.CharField(max_length=200, null=True)
-
-

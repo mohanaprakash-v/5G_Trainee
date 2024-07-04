@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
 from .models import Person
-from .serializers import PeopleSerializer
+from .serializers import PeopleSerializer, LoginSerializer
 
 # Standard Django view
 def index_html(request):
@@ -80,3 +80,14 @@ def person(request):
         person = Person.objects.get(id=data["id"])
         person.delete()
         return Response({"message" : "Person is Deleted"})
+    
+@api_view(['POST'])
+def login(request):
+    data = request.data
+    serializer = LoginSerializer(data=data)
+
+    if serializer.is_valid():
+        data = serializer.validated_data
+        return Response({"message" : "Success"})
+    
+    return Response(serializer.errors)
