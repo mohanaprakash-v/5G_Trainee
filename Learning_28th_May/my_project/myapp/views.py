@@ -45,16 +45,40 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        
-        user = authenticate(request, username=username, password=password)
+        context = {}
 
-        if user is not None:
-            auth_login(request, user)
-            return redirect('home')
+        if username == '' or password == '':
+            context['errmsg'] = 'Fields are Not Empty'
+            return render(request, 'login.html', context)
         else:
-            messages.info(request, 'Invalid Login Details!!')
-            return redirect('login')
-    return render(request, 'login.html')
+            user = authenticate(username=username , password=password)
+            print(user.password, user.is_superuser)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('home')
+            else:
+                context['errmsg'] = "Invalid username and password"
+                return render(request, 'login.html', context)
+    else:
+        return render(request, 'login.html')
+
+
+
+
+
+    # if request.method == 'POST':
+    #     username = request.POST['username']
+    #     password = request.POST['password']
+        
+    #     user = authenticate(request, username=username, password=password)
+
+    #     if user is not None:
+    #         auth_login(request, user)
+    #         return redirect('home')
+    #     else:
+    #         messages.info(request, 'Invalid Login Details!!')
+    #         return redirect('login')
+    # return render(request, 'login.html')
 
 def logout(request):
     auth_logout(request)
