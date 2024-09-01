@@ -58,4 +58,7 @@ def login(request):
 def git_practise(request):
     pass
 
+def test_one(request):
+    pass
+
     
