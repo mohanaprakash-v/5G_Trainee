@@ -55,4 +55,7 @@ def login(request):
         
     return render(request, 'login.html')
 
+def git_practise(request):
+    pass
+
     
