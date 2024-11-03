@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books with Publisher</title>
+</head>
+<body>
+    <h1>Books and Their Publishers</h1>
+    <ul>
+        {% for book in books %}
+            <li>
+                <strong>{{ book.title }}</strong> by {{ book.publisher.name }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

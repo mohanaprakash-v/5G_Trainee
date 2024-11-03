@@ -9,6 +9,43 @@ from django.views.decorators.http import require_POST, require_http_methods
 import json
 from .models import Feature
 
+
+
+#------------------------------------- PREFETCH AND SELECT RELATED QUERY (START) ---------------------------
+
+from django.shortcuts import render
+from .models import Book
+
+# TO DISPLAY BOOK NAMES WITH PUBLISHER
+
+
+def book_list_with_publisher(request):
+
+    # Using select_related to fetch publisher information in a single query
+    books = Book.objects.select_related('publisher').all()
+    return render(request, 'books/book_list_with_publisher.html', {'books': books})
+
+
+# TO DISPLAY BOOKS WITH AUTHOR NAMES
+
+def book_list_with_authors(request):
+
+    # Using prefetch_related to fetch authors in a separate query and attach them to books
+    books = Book.objects.prefetch_related('authors').all()
+    return render(request, 'books/book_list_with_authors.html', {'books': books})
+
+# TO DISPLAY ALL BOOKS WITH BOTH PUBLISHERS AND AUTHORS
+
+def book_list_with_publisher_and_authors(request):
+
+    # Using select_related and prefetch_related together
+    books = Book.objects.select_related('publisher').prefetch_related('authors').all()
+    return render(request, 'books/book_list_with_publisher_and_authors.html', {'books': books})
+
+
+
+#------------------------------------- PREFETCH AND SELECT RELATED QUERY (END) -----------------------------
+
 def index(request):
     # features = Feature.objects.all()
     return render(request, 'index.html')   # {'features': features}

@@ -14,4 +14,10 @@ urlpatterns = [
     path('delete_user/', views.delete_user, name='delete_user'),
     path('delete_user/<str:username>/', views.delete_user, name='delete_user'),
     path('update_user/<str:username>/', views.update_user, name='update_user'),
+
+    # PREFETCH AND SELECT RELATED URLS.
+
+    path('books/publisher/', views.book_list_with_publisher, name='book_list_with_publisher'),
+    path('books/authors/', views.book_list_with_authors, name='book_list_with_authors'),
+    path('books/publisher-authors/', views.book_list_with_publisher_and_authors, name='book_list_with_publisher_and_authors'),
 ]
