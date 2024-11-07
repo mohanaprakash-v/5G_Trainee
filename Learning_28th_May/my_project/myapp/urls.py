@@ -20,4 +20,6 @@ urlpatterns = [
     path('books/publisher/', views.book_list_with_publisher, name='book_list_with_publisher'),
     path('books/authors/', views.book_list_with_authors, name='book_list_with_authors'),
     path('books/publisher-authors/', views.book_list_with_publisher_and_authors, name='book_list_with_publisher_and_authors'),
+    path('fetching/', views.prefetch_select_related_fetching, name='fetching'),
+
 ]

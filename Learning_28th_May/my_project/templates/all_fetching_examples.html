@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FETCHING</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .section { margin-bottom: 20px; }
+        h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table, th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h1>Prefetch & Select Related Queries</h1>
+
+    <!-- Example 1: Books with Publishers -->
+    <div class="section">
+        <h2>Books with Publishers</h2>
+        <table>
+            <tr><th>Book Title</th><th>Publisher</th></tr>
+            {% for book in books_with_publishers %}
+                <tr><td>{{ book.title }}</td><td>{{ book.publisher.name }}</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Example 2: Books with Authors -->
+    <div class="section">
+        <h2>Books with Authors</h2>
+        <table>
+            <tr><th>Book Title</th><th>Authors</th></tr>
+            {% for book in books_with_authors %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>
+                        {% for author in book.authors.all %}
+                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Example 3: Books with Publishers and Authors -->
+    <div class="section">
+        <h2>Books with Publishers and Authors</h2>
+        <table>
+            <tr><th>Book Title</th><th>Publisher</th><th>Authors</th></tr>
+            {% for book in books_with_publishers_and_authors %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publisher.name }}</td>
+                    <td>
+                        {% for author in book.authors.all %}
+                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Example 4: Books with Authors and Other Books by Each Author -->
+    <div class="section">
+        <h2>Books with Authors and Other Books by Each Author</h2>
+        {% for book in books_with_authors_and_other_books %}
+            <p><strong>{{ book.title }}</strong> by
+                {% for author in book.authors.all %}
+                    {{ author.name }}:
+                    {% for other_book in author.book_set.all %}
+                        {{ other_book.title }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </p>
+        {% endfor %}
+    </div>
+
+    <!-- Example 5: Stores with Books and Inventory -->
+    <div class="section">
+        <h2>Stores with Books and Inventory</h2>
+        {% for store in stores_with_books_and_inventory %}
+            <h3>{{ store.name }}</h3>
+            <ul>
+                {% for inventory in store.inventory_set.all %}
+                    <li>{{ inventory.book.title }} - Publisher: {{ inventory.book.publisher.name }} (Stock: {{ inventory.stock }})</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <!-- Example 6: Books with Reviews and Publishers -->
+    <div class="section">
+        <h2>Books with Reviews and Publishers</h2>
+        {% for book in books_with_reviews_and_publishers %}
+            <h3>{{ book.title }} (Publisher: {{ book.publisher.name }})</h3>
+            <ul>
+                {% for review in book.review_set.all %}
+                    <li>{{ review.reviewer_name }} rated {{ review.rating }} - "{{ review.comment }}"</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <!-- Example 7: Books with High-Rated Reviews -->
+    <div class="section">
+        <h2>Books with High-Rated Reviews</h2>
+        {% for book in books_with_high_rated_reviews %}
+            <h3>{{ book.title }}</h3>
+            <ul>
+                {% for review in book.review_set.all %}
+                    <li>{{ review.reviewer_name }} rated {{ review.rating }} - "{{ review.comment }}"</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <!-- Example 8: Authors with Books and Average Ratings -->
+    <div class="section">
+        <h2>Authors with Books and Average Ratings</h2>
+        {% for author in authors_with_books_and_avg_rating %}
+            <h3>{{ author.name }}</h3>
+            <ul>
+                {% for book in author.book_set.all %}
+                    <li>{{ book.title }} - Avg Rating: {{ book.avg_rating|default:"N/A" }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

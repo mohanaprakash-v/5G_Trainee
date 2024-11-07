@@ -213,3 +213,56 @@ def delete_user(request, username):
         return redirect('home')
     
     return render(request, 'delete_user.html', {'user': user})
+
+
+
+
+#------------------------------ Prefetch and Select Related --------------------------------
+
+
+from django.shortcuts import render
+from django.db.models import Prefetch, Avg
+from .models import Book, Publisher, Author, Review, Store, Inventory
+
+def prefetch_select_related_fetching(request):
+    # Example 1: Books with their publishers (select_related)
+    books_with_publishers = Book.objects.select_related('publisher').all()
+
+    # Example 2: Books with their authors (prefetch_related)
+    books_with_authors = Book.objects.prefetch_related('authors').all()
+
+    # Example 3: Books with publishers and authors
+    books_with_publishers_and_authors = Book.objects.select_related('publisher').prefetch_related('authors').all()
+
+    # Example 4: Books with authors and other books by each author
+    books_with_authors_and_other_books = Book.objects.prefetch_related('authors', 'authors__book_set').all()
+
+    # Example 5: Stores with books and inventory
+    stores_with_books_and_inventory = Store.objects.prefetch_related('inventory_set__book__publisher').all()
+
+    # Example 6: Books with reviews and publishers
+    books_with_reviews_and_publishers = Book.objects.select_related('publisher').prefetch_related('review_set').all()
+
+    # Example 7: Books with high-rated reviews
+    high_rated_reviews = Review.objects.filter(rating__gte=4)
+    books_with_high_rated_reviews = Book.objects.prefetch_related(
+        Prefetch('review_set', queryset=high_rated_reviews)
+    ).all()
+
+    # Example 8: Authors with books and average ratings
+    authors_with_books_and_avg_rating = Author.objects.prefetch_related(
+        Prefetch('book_set', queryset=Book.objects.annotate(avg_rating=Avg('review__rating')))
+    ).all()
+
+    context = {
+        'books_with_publishers': books_with_publishers,
+        'books_with_authors': books_with_authors,
+        'books_with_publishers_and_authors': books_with_publishers_and_authors,
+        'books_with_authors_and_other_books': books_with_authors_and_other_books,
+        'stores_with_books_and_inventory': stores_with_books_and_inventory,
+        'books_with_reviews_and_publishers': books_with_reviews_and_publishers,
+        'books_with_high_rated_reviews': books_with_high_rated_reviews,
+        'authors_with_books_and_avg_rating': authors_with_books_and_avg_rating,
+    }
+
+    return render(request, 'all_fetching_examples.html', context)
